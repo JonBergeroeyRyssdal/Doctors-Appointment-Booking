@@ -27,7 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(connectionString);
 });
 
-//Services
+// Services
 builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AvailabilityService>();
@@ -42,9 +42,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://doctors-appointment-booking-frontend.onrender.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -71,41 +75,53 @@ builder.Services.AddSwaggerGen(options =>
 
 // JWT settings
 var jwtSettings = new JwtSettings();
-builder.Configuration.GetSection("JwtSettings").Bind(jwtSettings);
+
+builder.Configuration
+    .GetSection("JwtSettings")
+    .Bind(jwtSettings);
+
 builder.Services.AddSingleton(jwtSettings);
 
 // JWT authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services
+    .AddAuthentication(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
+        options.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
 
-        ValidIssuer = jwtSettings.Issuer,
-        ValidAudience = jwtSettings.Audience,
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
 
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
-        )
-    };
-});
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
+                )
+            };
+    });
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Seed database
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
+
+    var context =
+        services.GetRequiredService<AppDbContext>();
 
     DbInitializer.Seed(context);
 }
@@ -115,7 +131,11 @@ app.UseSwagger();
 
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+    options.SwaggerEndpoint(
+        "/swagger/v1/swagger.json",
+        "API v1"
+    );
+
     options.RoutePrefix = "doc";
 });
 
@@ -126,11 +146,14 @@ app.MapGet("/", context =>
     return Task.CompletedTask;
 });
 
+// CORS
 app.UseCors("AllowFrontend");
 
+// Authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
 
 app.Run();
