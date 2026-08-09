@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import AppointmentSuccess from "../../components/Appointment/AppointmentSuccess";
+import AppointmentSuccess from "../../components/appointment/AppointmentSuccess";
 
 function PatientAppointmentSuccessPage() {
   const location = useLocation();

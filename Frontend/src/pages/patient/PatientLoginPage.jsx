@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/forms/LoginForm";
 
-import { loginPatient } from "../../services/Authapi";
+import { loginPatient } from "../../services/authApi";
 
 function LoginPage() {
   const navigate = useNavigate();

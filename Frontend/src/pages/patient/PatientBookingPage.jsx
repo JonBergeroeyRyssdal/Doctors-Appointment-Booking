@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AppointmentForm from "../../components/Appointment/AppointmentForm";
+import AppointmentForm from "../../components/appointment/AppointmentForm";
 import PageLayout from "../../layouts/PageLayout";
 import { getDoctors, getAvailableTimes } from "../../services/doctorsApi";
 import { getClinics } from "../../services/clinicsApi";
