@@ -329,6 +329,387 @@ footer a:hover {
   word-break: break-word;
 }
 
+/* Consistent forms for booking, accounts and administration */
+.app-form {
+  container-type: inline-size;
+  margin-top: 1.25rem;
+  color: var(--app-heading);
+}
+
+.app-form-note {
+  color: var(--app-text);
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.app-form-note > span,
+.app-required {
+  color: var(--app-accent-dark);
+  font-weight: 600;
+}
+
+.app-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.app-form-field {
+  min-width: 0;
+}
+
+.app-form .form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.app-form .form-control,
+.app-form .form-select {
+  min-height: 3.35rem;
+  border: 1px solid #d4dbe7;
+  border-radius: 0.9rem;
+  background-color: #f8f9fc;
+  color: var(--app-heading);
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.025);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.app-form .form-select {
+  appearance: none;
+  padding-right: 3.5rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ede9fe'/%3E%3Cpath d='m11 14 5 5 5-5' fill='none' stroke='%236d28d9' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 2rem 2rem;
+  background-position: right 0.65rem center;
+  background-repeat: no-repeat;
+}
+
+.app-form .app-select-empty {
+  color: #747d8c;
+}
+
+.app-form .form-control::placeholder {
+  color: #747d8c;
+  opacity: 1;
+}
+
+.app-form .form-control:hover:not(:disabled),
+.app-form .form-select:hover:not(:disabled) {
+  border-color: #b6a3df;
+  background-color: #ffffff;
+}
+
+.app-form .form-control:focus,
+.app-form .form-select:focus {
+  border-color: var(--app-accent);
+  background-color: var(--app-surface);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12), 0 2px 5px rgba(15, 23, 42, 0.04);
+}
+
+/* Enhance the native desktop picker where supported; touch devices keep their OS picker. */
+@supports (appearance: base-select) and selector(::picker(select)) {
+  @media (hover: hover) and (pointer: fine) {
+    .app-form .form-select,
+    .app-form .form-select::picker(select) {
+      appearance: base-select;
+    }
+
+    .app-form .form-select {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-right: 0.65rem;
+      background-image: none;
+      overflow-wrap: anywhere;
+    }
+
+    .app-form .form-select::picker-icon {
+      content: "";
+      flex: 0 0 2rem;
+      width: 2rem;
+      height: 2rem;
+      margin-left: auto;
+      background: #ede9fe url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='m11 14 5 5 5-5' fill='none' stroke='%236d28d9' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 2rem no-repeat;
+      border-radius: 0.6rem;
+    }
+
+    .app-form .form-select:open::picker-icon {
+      rotate: 180deg;
+    }
+
+    .app-form .form-select::picker(select) {
+      background: #ffffff;
+      color: var(--app-heading);
+      border: 1px solid #ddd5ef;
+      border-radius: 1rem;
+      padding: 0.4rem;
+      margin-block: 0.4rem;
+      max-height: min(22rem, 50vh);
+      overflow-y: auto;
+      box-shadow: 0 12px 32px rgba(37, 23, 65, 0.14);
+    }
+
+    .app-form .form-select option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 2.75rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: 0.65rem;
+      white-space: normal;
+    }
+
+    .app-form .form-select option:checked {
+      background: var(--app-accent-soft);
+      color: var(--app-accent-dark);
+      font-weight: 600;
+    }
+
+    .app-form .form-select option:hover,
+    .app-form .form-select option:focus-visible {
+      background: #f4f0fc;
+      outline: 2px solid var(--app-accent);
+      outline-offset: -2px;
+    }
+
+    .app-form .form-select option::checkmark {
+      order: 1;
+      margin-left: auto;
+      color: var(--app-accent-dark);
+    }
+  }
+}
+
+.app-form .form-control:disabled,
+.app-form .form-select:disabled {
+  background-color: #f0f2f6;
+  color: var(--app-text);
+  cursor: not-allowed;
+}
+
+.app-form textarea.form-control {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+.app-form .form-text {
+  margin-top: 0.5rem;
+  color: var(--app-text);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.app-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--app-border);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+.app-form-submit {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 10rem;
+  min-height: 3.1rem;
+  border-radius: 0.75rem;
+}
+
+.app-form .btn-primary {
+  --bs-btn-disabled-bg: var(--app-accent-dark);
+  --bs-btn-disabled-border-color: var(--app-accent-dark);
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.15);
+}
+
+.app-form-compact .app-form-submit {
+  width: 100%;
+}
+
+.app-form-feedback {
+  border-radius: 0.75rem;
+  padding: 1rem 1.15rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+@container (min-width: 560px) {
+  .app-form:not(.app-form-compact) .app-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  .app-form-field-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@container (max-width: 400px) {
+  .app-form-submit {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-form .form-control,
+  .app-form .form-select {
+    transition: none;
+  }
+}
+
+/* Sections keep long forms readable without widening every field. */
+.app-form-section {
+  min-width: 0;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  border: 0;
+}
+
+.app-form-section legend {
+  float: none;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.form-section-description {
+  color: var(--app-text);
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-form-optional {
+  border: 1px solid var(--app-border);
+  border-radius: 0.9rem;
+  background: var(--app-surface-soft);
+  padding: 1rem 1.25rem;
+}
+
+.app-form-optional summary {
+  color: var(--app-accent-dark);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.app-form-optional[open] summary {
+  margin-bottom: 1.25rem;
+}
+
+.app-form-optional summary:focus-visible {
+  outline: 3px solid var(--app-accent);
+  outline-offset: 5px;
+  border-radius: 0.25rem;
+}
+
+.app-form-actions {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-form-actions > .btn-outline-secondary {
+  margin-right: auto;
+  border-radius: 0.75rem;
+}
+
+.booking-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+
+.booking-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--app-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--app-border);
+  padding-bottom: 0.9rem;
+}
+
+.booking-step-number {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #eef0f5;
+}
+
+.booking-steps .is-current {
+  color: var(--app-accent-dark);
+  border-color: var(--app-accent);
+}
+
+.booking-steps .is-current .booking-step-number {
+  background: var(--app-accent);
+  color: white;
+}
+
+.booking-steps .is-complete .booking-step-number {
+  color: var(--app-accent-dark);
+  background: var(--app-accent-soft);
+}
+
+.booking-step-heading:focus {
+  outline: none;
+}
+
+.booking-summary {
+  background: var(--app-surface-soft);
+  border: 1px solid var(--app-border);
+  border-radius: 0.9rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.booking-summary dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.booking-summary dt {
+  color: var(--app-text);
+  font-weight: 500;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.booking-summary dd {
+  color: var(--app-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.booking-summary .btn-link {
+  color: var(--app-accent-dark);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 575.98px) {
+  .booking-steps li {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.75rem;
+  }
+}
+
 /* Shared page rhythm */
 .app-shell {
   background: transparent;

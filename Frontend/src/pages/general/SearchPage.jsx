@@ -74,11 +74,12 @@ function SearchPage() {
       subtitle="Search for doctors by first name or last name."
       size="medium"
     >
-      <div className="mb-4">
-        <label className="form-label">Doctor name</label>
+      <div className="app-form app-search-field mb-4">
+        <label className="form-label" htmlFor="doctor-search">Doctor name</label>
 
         <input
           type="text"
+          id="doctor-search"
           className="form-control"
           placeholder="Enter first or last name"
           value={searchTerm}

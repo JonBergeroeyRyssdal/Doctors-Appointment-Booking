@@ -7,7 +7,6 @@ import { getClinics } from "../../services/clinicsApi";
 import { getSpecialities } from "../../services/specialitiesApi";
 import { createPatientAppointment } from "../../services/appointmentsApi";
 import {
-  filterDoctors,
   validatePatientAppointmentForm,
   buildPatientAppointmentPayload,
 } from "../../utils/appointmentUtils";
@@ -96,6 +95,7 @@ function PatientBookingPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "clinicId" ? { specialityId: "" } : {}),
 
       ...(name === "clinicId" || name === "specialityId"
         ? {
@@ -153,24 +153,18 @@ function PatientBookingPage() {
     }
   }
 
-  const filteredDoctors = filterDoctors(
-    doctors,
-    formData.clinicId,
-    formData.specialityId,
-  );
-
   return (
     <PageLayout
       title="Book an Appointment"
       subtitle="Choose an available appointment time."
-      size="small"
+      size="medium"
     >
       <AppointmentForm
         mode="patient"
         formData={formData}
         clinics={clinics}
         specialities={specialities}
-        filteredDoctors={filteredDoctors}
+        doctors={doctors}
         availableTimes={availableTimes}
         error={error}
         success={message}

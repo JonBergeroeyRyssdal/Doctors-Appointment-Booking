@@ -8,7 +8,6 @@ import { getClinics } from "../../services/clinicsApi";
 import { getSpecialities } from "../../services/specialitiesApi";
 import { createGuestAppointment } from "../../services/appointmentsApi";
 
-import { filterDoctors } from "../../utils/appointmentUtils";
 
 function GuestBookingPage() {
   const navigate = useNavigate();
@@ -99,6 +98,7 @@ function GuestBookingPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "clinicId" ? { specialityId: "" } : {}),
 
       ...(name === "clinicId" || name === "specialityId"
         ? {
@@ -146,17 +146,11 @@ function GuestBookingPage() {
     }
   }
 
-  const filteredDoctors = filterDoctors(
-    doctors,
-    formData.clinicId,
-    formData.specialityId,
-  );
-
   return (
     <PageLayout
       title="Book an Appointment"
       subtitle="Fill in your information and choose an available time."
-      size="small"
+      size="medium"
     >
       <AppointmentForm
         mode="guest"
@@ -164,7 +158,6 @@ function GuestBookingPage() {
         clinics={clinics}
         specialities={specialities}
         doctors={doctors}
-        filteredDoctors={filteredDoctors}
         availableTimes={availableTimes}
         error={error}
         success={success}

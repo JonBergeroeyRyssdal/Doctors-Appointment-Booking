@@ -22,12 +22,14 @@ function LoginForm({
       type: identifierType,
       placeholder: identifierPlaceholder,
       required: true,
+      autoComplete: identifierType === "email" ? "email" : "username",
     },
     {
       name: "password",
       label: "Password",
       type: "password",
       placeholder: "Enter password",
+      autoComplete: "current-password",
       required: true,
     },
   ];

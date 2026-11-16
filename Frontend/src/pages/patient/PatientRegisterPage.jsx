@@ -6,7 +6,7 @@ function RegisterPage() {
     <PageLayout
       title="Register"
       subtitle="Create a patient account to manage appointments."
-      size="small"
+      size="medium"
     >
       <RegisterForm />
     </PageLayout>

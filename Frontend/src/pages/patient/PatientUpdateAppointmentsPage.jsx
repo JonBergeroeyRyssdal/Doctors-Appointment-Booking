@@ -116,6 +116,8 @@ function PatientUpdateAppointmentPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "clinicId" ? { specialityId: "", doctorId: "", appointmentDateTime: "" } : {}),
+      ...(name === "specialityId" ? { doctorId: "", appointmentDateTime: "" } : {}),
       ...(name === "doctorId" ||
       name === "appointmentDate" ||
       name === "durationMinutes"
@@ -181,6 +183,7 @@ function PatientUpdateAppointmentPage() {
         specialities={specialities}
         doctors={doctors}
         availableTimes={availableTimes}
+        existingAppointment={appointment}
         error={error}
         success=""
         loading={loading}
