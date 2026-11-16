@@ -8,7 +8,6 @@ function AdminDashboardPage() {
       title="Admin Dashboard"
       subtitle="Manage clinics, doctors, admins, patients and specialities."
       size="large"
-      loading={loading}
     >
       <DashboardCardGrid cards={adminDashboardCards} />
     </PageLayout>
