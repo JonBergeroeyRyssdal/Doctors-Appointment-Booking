@@ -1,68 +1,69 @@
-import { Alert } from "react-bootstrap";
 import SuccessMessage from "../ui/SuccessMessage";
 import { formatDate, formatTime } from "../../utils/dateUtils";
 
 function AppointmentSuccess({
   appointment,
-  title = "Appointment booked successfully",
+  title = "Your appointment is booked",
   primaryButtonText,
   primaryButtonTo,
   secondaryButtonText,
   secondaryButtonTo,
 }) {
+  const start = appointment?.appointmentDateTime;
+  const startDate = start ? new Date(start) : null;
+  const validDate = startDate && !Number.isNaN(startDate.getTime());
+  const duration = Number(appointment?.durationMinutes);
+  const end = validDate && duration > 0
+    ? new Date(startDate.getTime() + duration * 60000).toISOString()
+    : null;
+
   return (
     <SuccessMessage
-      title={title}
+      title={appointment ? title : "Appointment details unavailable"}
+      message={appointment
+        ? "Your appointment details are saved. Here is your summary."
+        : "Open this page after booking to see your appointment summary."}
+      confirmed={Boolean(appointment)}
       primaryButtonText={primaryButtonText}
       primaryButtonTo={primaryButtonTo}
       secondaryButtonText={secondaryButtonText}
       secondaryButtonTo={secondaryButtonTo}
     >
-      {appointment ? (
-        <div className="text-start mb-4 border rounded p-3 bg-light">
-          <h5 className="mb-3">Appointment details</h5>
-
-          <p>
-            <strong>Date:</strong> {formatDate(appointment.appointmentDateTime)}
-          </p>
-
-          <p>
-            <strong>Time:</strong>{" "}
-            {appointment.displayTime ||
-              formatTime(appointment.appointmentDateTime)}
-            {" - "}
-            {appointment.endTime || "Not available"} (
-            {appointment.durationMinutes || 0} min)
-          </p>
-
-          <p>
-            <strong>Doctor:</strong> {appointment.doctorName || "Not available"}
-          </p>
-
-          <p>
-            <strong>Clinic:</strong> {appointment.clinicName || "Not available"}
-          </p>
-
-          <p>
-            <strong>Speciality:</strong>{" "}
-            {appointment.specialityName || "Not available"}
-          </p>
-
+      {appointment && (
+        <section className="confirmation-details" aria-labelledby="appointment-details-title">
+          <div className="confirmation-details-heading">
+            <h2 id="appointment-details-title">Appointment details</h2>
+            <span className="confirmation-status">{appointment.status || "Booked"}</span>
+          </div>
+          <dl className="confirmation-schedule">
+            <div>
+              <dt>Date</dt>
+              <dd>{validDate ? formatDate(start) : "Not available"}</dd>
+            </div>
+            <div>
+              <dt>Time</dt>
+              <dd>{appointment.displayTime || (validDate ? formatTime(start) : "Not available")}
+                {(appointment.endTime || end) && <> – {appointment.endTime || formatTime(end)}</>}
+              </dd>
+            </div>
+            <div>
+              <dt>Duration</dt>
+              <dd>{duration > 0 ? `${duration} minutes` : "Not available"}</dd>
+            </div>
+          </dl>
+          <dl className="confirmation-provider">
+            <div><dt>Doctor</dt><dd>{appointment.doctorName || "Not available"}</dd></div>
+            <div><dt>Clinic</dt><dd>{appointment.clinicName || "Not available"}</dd></div>
+            <div><dt>Speciality</dt><dd>{appointment.specialityName || "Not available"}</dd></div>
+            {appointment.id != null && <div><dt>Booking reference</dt><dd>#{appointment.id}</dd></div>}
+          </dl>
           {appointment.messageToDoctor && (
-            <p>
-              <strong>Message to doctor:</strong> {appointment.messageToDoctor}
-            </p>
+            <div className="confirmation-note">
+              <h3>Message to your doctor</h3>
+              <p>{appointment.messageToDoctor}</p>
+            </div>
           )}
-
-          <p className="mb-0">
-            <strong>Status:</strong> {appointment.status || "Booked"}
-          </p>
-        </div>
-      ) : (
-        <Alert variant="warning" className="text-start">
-          Appointment details are not available. This can happen if you opened
-          the success page directly or refreshed the page.
-        </Alert>
+        </section>
       )}
     </SuccessMessage>
   );

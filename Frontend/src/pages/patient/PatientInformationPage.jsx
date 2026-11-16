@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import PageLayout from "../../layouts/PageLayout";
-import ListTable from "../../components/ui/ListTable";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import { getLoggedInPatient } from "../../services/patientsApi";
 import { getPatientValue, formatPatientDate } from "../../utils/patientUtils";
 
@@ -93,32 +93,21 @@ function PatientInformationPage() {
       ]
     : [];
 
-  const columns = [
-    {
-      key: "field",
-      label: "Field",
-    },
-    {
-      key: "value",
-      label: "Value",
-    },
-  ];
-
   return (
     <PageLayout
       title="My information"
-      subtitle="View (and manage not implemented) your personal information."
+      subtitle="Your personal, contact and insurance information."
       size="medium"
     >
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <ListTable
-        columns={columns}
-        items={patientDetails}
-        loading={loading}
-        emptyMessage="No patient information found."
-        className="patient-info-table"
-      />
+      {loading ? <LoadingSpinner /> : patient ? (
+        <dl className="profile-details">
+          {patientDetails.map((detail) => (
+            <div key={detail.id}><dt>{detail.field}</dt><dd>{detail.value}</dd></div>
+          ))}
+        </dl>
+      ) : !error && <div className="content-state"><p>No patient information found.</p></div>}
     </PageLayout>
   );
 }

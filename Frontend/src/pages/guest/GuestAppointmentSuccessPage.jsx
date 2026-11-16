@@ -9,7 +9,9 @@ function GuestAppointmentSuccessPage() {
     <AppointmentSuccess
       appointment={appointment}
       primaryButtonText="Book another appointment"
-      primaryButtonTo="/"
+      primaryButtonTo="/book"
+      secondaryButtonText="Back to home"
+      secondaryButtonTo="/"
     />
   );
 }

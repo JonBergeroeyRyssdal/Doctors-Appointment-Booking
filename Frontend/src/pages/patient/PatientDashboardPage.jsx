@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import DashboardCardGrid from "../../components/dashboard/DashboardCardGrid";
 import PageLayout from "../../layouts/PageLayout";
 import { getLoggedInPatient } from "../../services/patientsApi";
@@ -9,23 +11,26 @@ function PatientDashboardPage() {
   const [patient, setPatient] = useState(null);
 
   useEffect(() => {
-    fetchPatient();
-  }, []);
-
-  async function fetchPatient() {
+    let active = true;
+    async function fetchPatient() {
     try {
       const data = await getLoggedInPatient();
-      setPatient(data);
+      if (active) setPatient(data);
     } catch (error) {
       console.error(error);
     }
-  }
+    }
+    fetchPatient();
+    return () => { active = false; };
+  }, []);
 
   const firstName = patient?.firstName || patient?.FirstName || "";
 
   return (
     <PageLayout
-      title={`Welcome ${firstName}`}
+      title={firstName ? `Welcome, ${firstName}` : "Your patient dashboard"}
+      eyebrow="Your care, in one place"
+      actions={<Button as={Link} to="/patient/book">Book appointment</Button>}
       subtitle="Manage your appointments and personal information"
       size="large"
     >

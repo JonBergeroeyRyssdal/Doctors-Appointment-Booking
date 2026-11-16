@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import AppIcon from "../ui/AppIcon";
 
 function DashboardCard({ card }) {
   const content = (
-    <Card className="h-100 shadow-sm border-0 dashboard-card">
+    <Card className={`h-100 dashboard-card ${card.to || card.onClick ? "dashboard-card-interactive" : "dashboard-card-static"}`}>
       <Card.Body className="d-flex flex-column">
-        <Card.Title>{card.title}</Card.Title>
+        <div className="dashboard-card-top">
+          <span className="dashboard-icon"><AppIcon name={card.icon || "clinic"} /></span>
+          {card.to === "/not-implemented" && <span className="feature-badge">Coming soon</span>}
+        </div>
+        <Card.Title as="h2">{card.title}</Card.Title>
 
-        <Card.Text className="text-muted mb-0 flex-grow-1">
+        <div className="text-muted dashboard-card-description flex-grow-1">
           {card.text}
-        </Card.Text>
+        </div>
+        {(card.to || card.onClick) && <span className="dashboard-card-action">{card.buttonText || "Explore"}<span aria-hidden="true">&rarr;</span></span>}
       </Card.Body>
     </Card>
   );
@@ -18,18 +24,16 @@ function DashboardCard({ card }) {
     return (
       <Link
         to={card.to}
-        className="text-decoration-none text-dark d-block h-100"
+        className="dashboard-card-link text-decoration-none text-dark d-block h-100"
       >
         {content}
       </Link>
     );
   }
 
-  return (
-    <div onClick={card.onClick} className="h-100" style={{ cursor: "pointer" }}>
-      {content}
-    </div>
-  );
+  return card.onClick ? (
+    <button type="button" onClick={card.onClick} className="dashboard-card-button h-100">{content}</button>
+  ) : content;
 }
 
 export default DashboardCard;

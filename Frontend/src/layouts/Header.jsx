@@ -1,10 +1,10 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { logoutPatient, logoutAdmin } from "../services/authStorage";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import LogoutButton from "../components/ui/LogoutButton";
 
 function Header() {
-  const navigate = useNavigate();
+  useLocation();
   const [expanded, setExpanded] = useState(false);
 
   const patientToken = localStorage.getItem("token");
@@ -12,16 +12,6 @@ function Header() {
 
   const isPatientLoggedIn = !!patientToken;
   const isAdminLoggedIn = !!adminToken;
-
-  function handlePatientLogout() {
-    logoutPatient();
-    navigate("/");
-  }
-
-  function handleAdminLogout() {
-    logoutAdmin();
-    navigate("/admin/login");
-  }
 
   return (
     <Navbar expand="lg" variant="light" expanded={expanded} onToggle={setExpanded} className="app-navbar py-3">
@@ -79,7 +69,9 @@ function Header() {
                 Patient Dashboard
               </Nav.Link>
 
-              <Nav.Link onClick={handlePatientLogout}>Logout</Nav.Link>
+              <LogoutButton className="nav-logout" onLogout={() => setExpanded(false)}>
+                {isAdminLoggedIn ? "Log out as patient" : "Log out"}
+              </LogoutButton>
             </>
           )}
 
@@ -89,7 +81,9 @@ function Header() {
                 Admin Dashboard
               </Nav.Link>
 
-              <Nav.Link onClick={handleAdminLogout}>Admin Logout</Nav.Link>
+              <LogoutButton account="admin" className="nav-logout" onLogout={() => setExpanded(false)}>
+                {isPatientLoggedIn ? "Log out as admin" : "Log out"}
+              </LogoutButton>
             </>
           )}
         </Nav>

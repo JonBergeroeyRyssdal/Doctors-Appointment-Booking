@@ -1,9 +1,9 @@
 function LoadingSpinner() {
   return (
-    <div className="d-flex justify-content-center mt-5">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
+    <div className="content-state" role="status">
+      <div className="spinner-border text-primary" aria-hidden="true">
       </div>
+      <p>Loading, please wait…</p>
     </div>
   );
 }

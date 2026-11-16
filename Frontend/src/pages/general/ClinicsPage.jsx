@@ -9,16 +9,16 @@ function ClinicsPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchClinics();
-  }, []);
-
-  async function fetchClinics() {
+    let active = true;
+    async function fetchClinics() {
     try {
       setLoading(true);
 
       const data = await getClinics();
 
       const formattedCards = data.map((clinic) => ({
+        id: clinic.id,
+        icon: "clinic",
         title: clinic.name,
         text: (
           <>
@@ -27,35 +27,31 @@ function ClinicsPage() {
             <div>{clinic.city}</div>
           </>
         ),
-        to: "/not-implemented",
-        buttonText: "View clinic",
       }));
 
-      setCards(formattedCards);
+      if (active) setCards(formattedCards);
     } catch (error) {
       console.error(error);
-      setError("Failed to load clinics.");
+      if (active) setError("Failed to load clinics.");
     } finally {
-      setLoading(false);
+      if (active) setLoading(false);
     }
-  }
-
-  if (loading) {
-    return <p>Loading clinics...</p>;
-  }
-
-  if (error) {
-    return <p className="text-danger">{error}</p>;
-  }
+    }
+    fetchClinics();
+    return () => { active = false; };
+  }, []);
 
   return (
     <PageLayout
       title="Our Clinics"
+      eyebrow="Find your location"
       subtitle="Browse our clinics and find the location that suits you best."
       size="large"
       loading={loading}
     >
-      <DashboardCardGrid description="" cards={cards} />
+      {error ? <div className="alert alert-danger" role="alert">{error}</div>
+        : cards.length ? <DashboardCardGrid cards={cards} />
+          : <div className="content-state"><p>No clinics available yet.</p></div>}
     </PageLayout>
   );
 }

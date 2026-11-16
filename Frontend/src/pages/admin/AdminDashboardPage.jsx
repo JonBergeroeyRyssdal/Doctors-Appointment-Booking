@@ -6,6 +6,7 @@ function AdminDashboardPage() {
   return (
     <PageLayout
       title="Admin Dashboard"
+      eyebrow="Clinic administration"
       subtitle="Manage clinics, doctors, admins, patients and specialities."
       size="large"
     >

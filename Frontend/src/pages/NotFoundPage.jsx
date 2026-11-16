@@ -6,6 +6,7 @@ function NotFoundPage() {
   return (
     <PageLayout
       title="404 - Page not found"
+      eyebrow="Let’s get you back"
       subtitle="The page you are looking for does not exist."
     >
       <p className="mb-4">
