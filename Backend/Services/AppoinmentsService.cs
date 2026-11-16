@@ -2,6 +2,9 @@ using Backend.Data;
 using Backend.Dtos;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace Backend.Services;
 
@@ -47,7 +50,17 @@ public class AppointmentService
             };
 
             _context.Patients.Add(patient);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException exception) when (
+                exception.InnerException is MySqlException { Number: 1062 })
+            {
+                // A concurrent guest request may have created the same email.
+                _context.Entry(patient).State = EntityState.Detached;
+                patient = await _context.Patients.SingleAsync(p => p.Email == email);
+            }
         }
 
         return await CreateAppointmentForPatientAsync(dto, patient.Id);
@@ -79,6 +92,11 @@ public class AppointmentService
         int patientId
     )
     {
+        await using var transaction = await _context.Database
+            .BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        await LockPatientAsync(patientId);
+        await LockDoctorAsync(dto.DoctorId);
+
         var appointment = await _context.Appointments
             .FirstOrDefaultAsync(a =>
                 a.Id == appointmentId &&
@@ -131,6 +149,7 @@ public class AppointmentService
         appointment.Status = "Booked";
 
         await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
 
         var dtoResult = BuildAppointmentDto(
             appointment,
@@ -147,6 +166,10 @@ public class AppointmentService
         int patientId
     )
     {
+        await using var transaction = await _context.Database
+            .BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        await LockPatientAsync(patientId);
+
         var appointment = await _context.Appointments
             .FirstOrDefaultAsync(a =>
                 a.Id == appointmentId &&
@@ -178,6 +201,7 @@ public class AppointmentService
         appointment.Status = "Cancelled";
 
         await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
 
         return AppointmentServiceResult.Ok(new
         {
@@ -191,6 +215,11 @@ public class AppointmentService
             int patientId
         )
     {
+        await using var transaction = await _context.Database
+            .BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        await LockPatientAsync(patientId);
+        await LockDoctorAsync(dto.DoctorId);
+
         var validationResult = await ValidateAppointmentDataAsync(
             dto.ClinicId,
             dto.SpecialityId,
@@ -220,6 +249,7 @@ public class AppointmentService
 
         _context.Appointments.Add(appointment);
         await _context.SaveChangesAsync();
+        await transaction.CommitAsync();
 
         var dtoResult = BuildAppointmentDto(
             appointment,
@@ -229,6 +259,29 @@ public class AppointmentService
         );
 
         return AppointmentServiceResult.Ok(dtoResult);
+    }
+
+    private Task LockPatientAsync(int patientId) =>
+        LockRowAsync("SELECT `Id` FROM `Patients` WHERE `Id` = @id FOR UPDATE", patientId);
+
+    private Task LockDoctorAsync(int doctorId) =>
+        LockRowAsync("SELECT `Id` FROM `Doctors` WHERE `Id` = @id FOR UPDATE", doctorId);
+
+    private async Task LockRowAsync(string sql, int id)
+    {
+        // Always lock patient before doctor. Lock parent rows even when no bookings exist.
+        // READ COMMITTED lets overlap checks see bookings committed while waiting.
+        // Disposal rolls back on early return or exceptions and releases all locks.
+        var transaction = _context.Database.CurrentTransaction
+            ?? throw new InvalidOperationException("Booking locks require an active transaction.");
+        await using var command = _context.Database.GetDbConnection().CreateCommand();
+        command.Transaction = transaction.GetDbTransaction();
+        command.CommandText = sql;
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = "@id";
+        parameter.Value = id;
+        command.Parameters.Add(parameter);
+        await command.ExecuteScalarAsync();
     }
 
     private async Task<AppointmentValidationResult>

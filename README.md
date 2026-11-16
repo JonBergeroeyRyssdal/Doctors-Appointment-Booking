@@ -164,6 +164,16 @@ Password: admin
 
 # Business Rules
 
+Appointment creation and updates run in a MySQL transaction at READ COMMITTED
+isolation. The service locks the patient row and then the destination doctor row
+using `SELECT ... FOR UPDATE` before checking for overlaps. Locks are held until
+the transaction commits or rolls back, so concurrent requests for the same patient
+or doctor wait and then validate against the latest committed appointments.
+Cancellation also locks the patient to serialize it with appointment updates.
+This requires InnoDB tables and all booking writes to use `AppointmentService`.
+No database migration is required. Integration checks are documented in
+[`Tests/BookingConcurrency/README.md`](Tests/BookingConcurrency/README.md).
+
 The system validates that:
 
 - Appointments cannot overlap for the same doctor
