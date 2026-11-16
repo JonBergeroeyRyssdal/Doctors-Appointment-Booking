@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { useEffect, useState } from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 
 import PageLayout from "../../layouts/PageLayout";
 import ListTable from "../../components/ui/ListTable";
@@ -144,16 +146,15 @@ function AdminClinicsPage() {
     <PageLayout
       title="Manage clinics"
       subtitle="View, add, edit and delete clinics in the system."
-      size="large"
+      eyebrow="Clinic administration"
+      actions={<Link className="btn btn-outline-secondary" to="/admin/dashboard">Back to dashboard</Link>}
+      size="wide"
     >
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Card.Title>
-            {editingClinicId ? "Edit clinic" : "Add new clinic"}
-          </Card.Title>
+      <div className="management-layout">
+        <ManagementPanel kind="form" icon="clinic" title={editingClinicId ? "Edit clinic" : "Add new clinic"} description="Add a clinic or update an existing location." editingId={editingClinicId}>
 
           <UniversalForm
             fields={clinicFields}
@@ -169,7 +170,7 @@ function AdminClinicsPage() {
           {editingClinicId && (
             <Button
               type="button"
-              variant="secondary"
+              variant="outline-secondary"
               onClick={resetForm}
               disabled={loading}
               className="mt-2"
@@ -177,21 +178,19 @@ function AdminClinicsPage() {
               Cancel
             </Button>
           )}
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
 
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title>Clinics</Card.Title>
+        <ManagementPanel kind="list" icon="clinic" title="Clinics" description="Browse your directory and manage existing records." count={clinics.length} loading={loading}>
 
           <ListTable
+            caption="Clinics"
             columns={columns}
             items={clinics}
             loading={loading}
             emptyMessage="No clinics found."
           />
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
+      </div>
     </PageLayout>
   );
 }

@@ -1,5 +1,5 @@
 import UniversalForm from "./UniversalForm";
-import PageLayout from "../../layouts/PageLayout";
+import AccountLayout from "../../layouts/AccountLayout";
 
 function LoginForm({
   title = "Login",
@@ -14,6 +14,7 @@ function LoginForm({
   buttonText = "Login",
   loading = false,
   error = "",
+  mode = "patient",
 }) {
   const fields = [
     {
@@ -35,10 +36,10 @@ function LoginForm({
   ];
 
   return (
-    <PageLayout
+    <AccountLayout
       title={title}
       subtitle={subtitle}
-      size="small"
+      mode={mode}
     >
       <UniversalForm
         fields={fields}
@@ -51,7 +52,7 @@ function LoginForm({
         loadingText="Logging in..."
         buttonVariant="primary"
       />
-    </PageLayout>
+    </AccountLayout>
   );
 }
 

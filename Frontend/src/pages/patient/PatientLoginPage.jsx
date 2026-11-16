@@ -51,6 +51,7 @@ function LoginPage() {
   return (
     <LoginForm
       title="Patient Login"
+      subtitle="Sign in to see your appointments and patient information."
       identifierLabel="Email"
       identifierName="email"
       identifierType="email"

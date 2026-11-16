@@ -81,9 +81,10 @@ export async function getAvailableTimes(doctorId, date, durationMinutes) {
   return await response.json();
 }
 
-export async function searchDoctors(name) {
+export async function searchDoctors(name, { signal } = {}) {
   const response = await fetch(
     `${API_BASE_URL}/doctors/search?name=${encodeURIComponent(name)}`,
+    { signal },
   );
 
   if (!response.ok) {

@@ -1,4 +1,6 @@
 const paths = {
+  login: "M14 4h6v16h-6M9 8l4 4-4 4M3 12h10",
+  userPlus: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm10 5v6m-3-3h6",
   logout: "M9 4H4v16h5m6-12 4 4-4 4m-7-4h11",
   calendar: "M7 3v4m10-4v4M4 10h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1ZM8 14h3m-3 3h5",
   clinic: "M4 21V7h16v14M9 7V3h6v4M9 21v-5h6v5M9 11h6m-3-3v6",

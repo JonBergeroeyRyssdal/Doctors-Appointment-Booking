@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { useEffect, useState } from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 
 import PageLayout from "../../layouts/PageLayout";
 import ListTable from "../../components/ui/ListTable";
@@ -151,16 +153,15 @@ function AdminAdminsPage() {
     <PageLayout
       title="Manage admins"
       subtitle="Create, update and delete administrator accounts."
-      size="large"
+      eyebrow="Clinic administration"
+      actions={<Link className="btn btn-outline-secondary" to="/admin/dashboard">Back to dashboard</Link>}
+      size="wide"
     >
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Card.Title>
-            {editingAdminId ? "Edit admin" : "Add new admin"}
-          </Card.Title>
+      <div className="management-layout">
+        <ManagementPanel kind="form" icon="shield" title={editingAdminId ? "Edit admin" : "Add new admin"} description="Create or update a clinic administrator account." editingId={editingAdminId}>
 
           <UniversalForm
             fields={adminFields}
@@ -175,7 +176,7 @@ function AdminAdminsPage() {
 
           {editingAdminId && (
             <Button
-              variant="secondary"
+              variant="outline-secondary"
               onClick={resetForm}
               disabled={loading}
               className="mt-2"
@@ -183,21 +184,19 @@ function AdminAdminsPage() {
               Cancel
             </Button>
           )}
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
 
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title>Admins</Card.Title>
+        <ManagementPanel kind="list" icon="shield" title="Admins" description="Browse your directory and manage existing records." count={admins.length} loading={loading}>
 
           <ListTable
+            caption="Admins"
             columns={columns}
             items={admins}
             loading={loading}
             emptyMessage="No admins found."
           />
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
+      </div>
     </PageLayout>
   );
 }

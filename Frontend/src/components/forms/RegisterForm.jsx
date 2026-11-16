@@ -66,7 +66,7 @@ function RegisterForm() {
       onChange={handleChange}
       onSubmit={handleSubmit}
       buttonText="Register"
-      buttonVariant="success"
+      buttonVariant="primary"
       loadingText="Registering..."
     />
   );

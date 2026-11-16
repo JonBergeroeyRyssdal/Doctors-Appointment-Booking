@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { useEffect, useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import PageLayout from "../../layouts/PageLayout";
 import ListTable from "../../components/ui/ListTable";
@@ -137,13 +139,12 @@ function AdminSpecialitiesPage() {
     <PageLayout
       title="Manage specialities"
       subtitle="View, add, edit and delete medical specialities."
-      size="large"
+      eyebrow="Clinic administration"
+      actions={<Link className="btn btn-outline-secondary" to="/admin/dashboard">Back to dashboard</Link>}
+      size="wide"
     >
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Card.Title>
-            {editingSpecialityId ? "Edit speciality" : "Add new speciality"}
-          </Card.Title>
+      <div className="management-layout">
+        <ManagementPanel kind="form" icon="info" title={editingSpecialityId ? "Edit speciality" : "Add new speciality"} description="Keep your medical speciality directory up to date." editingId={editingSpecialityId}>
 
           <UniversalForm
             fields={fields}
@@ -161,7 +162,7 @@ function AdminSpecialitiesPage() {
 
           {editingSpecialityId && (
             <Button
-              variant="secondary"
+              variant="outline-secondary"
               className="mt-2"
               onClick={resetForm}
               disabled={loading}
@@ -169,21 +170,19 @@ function AdminSpecialitiesPage() {
               Cancel
             </Button>
           )}
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
 
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title>Specialities</Card.Title>
+        <ManagementPanel kind="list" icon="info" title="Specialities" description="Browse your directory and manage existing records." count={specialities.length} loading={loading}>
 
           <ListTable
+            caption="Specialities"
             columns={columns}
             items={specialities}
             loading={loading}
             emptyMessage="No specialities found."
           />
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
+      </div>
     </PageLayout>
   );
 }

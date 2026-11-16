@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { useEffect, useState } from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 
 import PageLayout from "../../layouts/PageLayout";
 import ListTable from "../../components/ui/ListTable";
@@ -221,16 +223,15 @@ function AdminDoctorsPage() {
     <PageLayout
       title="Manage doctors"
       subtitle="View, add, edit and delete doctors."
-      size="large"
+      eyebrow="Clinic administration"
+      actions={<Link className="btn btn-outline-secondary" to="/admin/dashboard">Back to dashboard</Link>}
+      size="wide"
     >
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Card.Title>
-            {editingDoctorId ? "Edit doctor" : "Add new doctor"}
-          </Card.Title>
+      <div className="management-layout">
+        <ManagementPanel kind="form" icon="doctor" title={editingDoctorId ? "Edit doctor" : "Add new doctor"} description="Set up a doctor and their clinic and speciality." editingId={editingDoctorId}>
 
           <UniversalForm
             fields={doctorFields}
@@ -245,28 +246,26 @@ function AdminDoctorsPage() {
           {editingDoctorId && (
             <Button
               type="button"
-              variant="secondary"
+              variant="outline-secondary"
               className="mt-3"
               onClick={resetForm}
             >
               Cancel
             </Button>
           )}
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
 
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title>Doctors</Card.Title>
+        <ManagementPanel kind="list" icon="doctor" title="Doctors" description="Browse your directory and manage existing records." count={doctors.length} loading={loading}>
 
           <ListTable
+            caption="Doctors"
             columns={doctorColumns(handleEdit, handleDelete)}
             items={doctors}
             loading={loading}
             emptyMessage="No doctors found."
           />
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
+      </div>
     </PageLayout>
   );
 }

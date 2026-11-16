@@ -48,6 +48,8 @@ function AdminLoginPage() {
   return (
     <LoginForm
       title="Admin Login"
+      subtitle="Sign in to your clinic administration workspace."
+      mode="admin"
       identifierLabel="Username"
       identifierName="username"
       identifierType="text"

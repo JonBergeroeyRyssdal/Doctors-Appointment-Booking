@@ -1,15 +1,15 @@
 import RegisterForm from "../../components/forms/RegisterForm";
-import PageLayout from "../../layouts/PageLayout";
+import AccountLayout from "../../layouts/AccountLayout";
 
 function RegisterPage() {
   return (
-    <PageLayout
-      title="Register"
-      subtitle="Create a patient account to manage appointments."
-      size="medium"
+    <AccountLayout
+      title="Create your account"
+      subtitle="Enter your details below. Additional information is optional."
+      mode="register"
     >
       <RegisterForm />
-    </PageLayout>
+    </AccountLayout>
   );
 }
 

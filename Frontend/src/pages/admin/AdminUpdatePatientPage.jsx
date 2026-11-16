@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
 import PageLayout from "../../layouts/PageLayout";
@@ -7,6 +7,7 @@ import PageLayout from "../../layouts/PageLayout";
 import { getPatientById, updatePatient } from "../../services/patientsApi";
 
 import PatientForm from "../../components/forms/PatientForm";
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { updatePatientFields } from "../../data/updatePatientFields";
 
 const initialFormData = {
@@ -95,9 +96,8 @@ function AdminUpdatePatientPage() {
   }
 
   return (
-    <PageLayout title="Update patient" subtitle="Edit patient information.">
-      <Card className="shadow-sm">
-        <Card.Body>
+    <PageLayout title="Update patient" subtitle="Edit patient information." eyebrow="Patient records">
+      <ManagementPanel icon="users" title="Patient details" description="Keep personal, contact and insurance information up to date.">
           <PatientForm
             fields={updatePatientFields}
             formData={formData}
@@ -111,14 +111,13 @@ function AdminUpdatePatientPage() {
           />
 
           <Button
-            variant="secondary"
+            variant="outline-secondary"
             className="mt-3"
             onClick={() => navigate("/admin/patients")}
           >
             Cancel
           </Button>
-        </Card.Body>
-      </Card>
+      </ManagementPanel>
     </PageLayout>
   );
 }

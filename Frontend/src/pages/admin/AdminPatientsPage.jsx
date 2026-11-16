@@ -1,5 +1,6 @@
+import ManagementPanel from "../../components/ui/ManagementPanel";
 import { useEffect, useState } from "react";
-import { Alert, Button, Card } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 import PageLayout from "../../layouts/PageLayout";
@@ -114,14 +115,15 @@ function AdminPatientsPage() {
     <PageLayout
       title="Manage patients"
       subtitle="View, edit and delete patients in the system."
-      size="large"
+      eyebrow="Clinic administration"
+      actions={<Link className="btn btn-outline-secondary" to="/admin/dashboard">Back to dashboard</Link>}
+      size="wide"
     >
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Card.Title>Register new patient</Card.Title>
+      <div className="management-layout">
+        <ManagementPanel kind="form" icon="users" title="Register new patient" description="Use patient registration to create a new account.">
 
           <p className="mb-3">
             New patients should be registered through the normal patient
@@ -131,21 +133,19 @@ function AdminPatientsPage() {
           <Button as={Link} to="/register" variant="primary">
             Go to register page
           </Button>
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
 
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Card.Title>Patients</Card.Title>
+        <ManagementPanel kind="list" icon="users" title="Patients" description="Browse your directory and manage existing records." count={patients.length} loading={loading}>
 
           <ListTable
+            caption="Patients"
             columns={columns}
             items={patients}
             loading={loading}
             emptyMessage="No patients found."
           />
-        </Card.Body>
-      </Card>
+        </ManagementPanel>
+      </div>
     </PageLayout>
   );
 }
