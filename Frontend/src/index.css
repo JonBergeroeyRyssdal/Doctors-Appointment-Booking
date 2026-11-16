@@ -9,7 +9,7 @@
   --app-accent: #7c3aed;
   --app-accent-dark: #5b21b6;
   --app-accent-soft: #ede9fe;
-  --app-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --app-shadow: 0 4px 18px rgba(15, 23, 42, 0.045);
 
   --app-sans: system-ui, "Segoe UI", Roboto, sans-serif;
   --app-mono: ui-monospace, Consolas, monospace;
@@ -81,8 +81,8 @@ a {
 
 .dashboard-card {
   border: 1px solid var(--app-border) !important;
-  border-radius: 1.4rem !important;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+  border-radius: 1rem !important;
+  background: var(--app-surface);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -91,9 +91,9 @@ a {
 }
 
 .dashboard-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-2px);
   border-color: var(--app-accent) !important;
-  box-shadow: 0 22px 50px rgba(124, 58, 237, 0.16) !important;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.09) !important;
 }
 
 /* Buttons */
@@ -327,4 +327,122 @@ footer a:hover {
 .app-table td:last-child {
   color: var(--app-text);
   word-break: break-word;
+}
+
+/* Shared page rhythm */
+.app-shell {
+  background: transparent;
+}
+
+.app-main {
+  padding-top: clamp(1.5rem, 4vw, 3.5rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.page-card-body {
+  padding: clamp(1.25rem, 3.5vw, 2.75rem);
+}
+
+.page-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  margin-bottom: 0.875rem;
+}
+
+.page-subtitle {
+  max-width: 65ch;
+  margin-bottom: 2rem;
+}
+
+.page-card-body > .page-title:last-child {
+  margin-bottom: 2rem;
+}
+
+/* Navigation */
+.app-navbar .nav-link {
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.app-navbar .nav-link.active {
+  color: var(--app-accent-dark) !important;
+  background: var(--app-accent-soft);
+}
+
+.app-navbar .navbar-toggler {
+  border-color: var(--app-border);
+  padding: 0.5rem 0.65rem;
+}
+
+.app-navbar .navbar-toggler:focus-visible,
+.app-navbar .nav-link:focus-visible,
+.welcome-account-link:focus-visible,
+.dashboard-card:focus-within {
+  outline: 3px solid var(--app-accent);
+  outline-offset: 3px;
+}
+
+/* A clear primary action on the welcome page */
+.welcome-booking {
+  border-color: #d9cdf4;
+  background: var(--app-accent-soft);
+}
+
+.welcome-eyebrow {
+  color: var(--app-accent-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.welcome-booking h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.welcome-booking-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.welcome-account {
+  box-shadow: none;
+}
+
+.welcome-account-link {
+  color: var(--app-accent-dark);
+  font-weight: 600;
+  text-underline-offset: 0.25em;
+}
+
+.welcome-account-link:hover {
+  color: var(--app-accent);
+}
+
+@media (max-width: 991.98px) {
+  .app-navbar .navbar-nav {
+    padding-top: 1rem;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .welcome-booking-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-card,
+  .btn {
+    transition: none;
+  }
+
+  .dashboard-card:hover,
+  .btn-primary:hover,
+  .btn-success:hover {
+    transform: none;
+  }
 }

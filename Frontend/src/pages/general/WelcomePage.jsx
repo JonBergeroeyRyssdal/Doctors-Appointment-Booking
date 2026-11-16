@@ -1,6 +1,4 @@
-import { useState } from "react";
 import WelcomeComponent from "../../components/home/WelcomeComponent";
-import GuestBookingPage from "../guest/GuestBookingPage";
 import PageLayout from "../../layouts/PageLayout";
 
 function WelcomePage() {

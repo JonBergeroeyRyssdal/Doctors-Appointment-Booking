@@ -1,9 +1,11 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logoutPatient, logoutAdmin } from "../services/authStorage";
 
 function Header() {
   const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
 
   const patientToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");
@@ -22,48 +24,50 @@ function Header() {
   }
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar expand="lg" variant="light" expanded={expanded} onToggle={setExpanded} className="app-navbar py-3">
       <Container>
         <Navbar.Brand as={Link} to="/">
           Clinic
         </Navbar.Brand>
 
-        <Nav>
+        <Navbar.Toggle aria-controls="clinic-navigation" aria-label="Toggle navigation" />
+        <Navbar.Collapse id="clinic-navigation">
+        <Nav className="ms-auto gap-lg-1" onClick={() => setExpanded(false)}>
           {!isPatientLoggedIn && !isAdminLoggedIn && (
-            <Nav.Link as={Link} to="/book">
+            <Nav.Link as={NavLink} end to="/book">
               Book appointment
             </Nav.Link>
           )}
 
           {isPatientLoggedIn && (
-            <Nav.Link as={Link} to="/patient/book">
+            <Nav.Link as={NavLink} end to="/patient/book">
               Book appointment
             </Nav.Link>
           )}
 
-          <Nav.Link as={Link} to="/about">
+          <Nav.Link as={NavLink} end to="/about">
             About
           </Nav.Link>
 
-          <Nav.Link as={Link} to="/search">
+          <Nav.Link as={NavLink} end to="/search">
             Doctors
           </Nav.Link>
 
-          <Nav.Link as={Link} to="/clinics">
+          <Nav.Link as={NavLink} end to="/clinics">
             Clinics
           </Nav.Link>
 
-          <Nav.Link as={Link} to="/not-implemented">
+          <Nav.Link as={NavLink} end to="/not-implemented">
             Specialities
           </Nav.Link>
 
           {!isPatientLoggedIn && !isAdminLoggedIn && (
             <>
-              <Nav.Link as={Link} to="/login">
+              <Nav.Link as={NavLink} end to="/login">
                 Login
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/register">
+              <Nav.Link as={NavLink} end to="/register">
                 Register
               </Nav.Link>
             </>
@@ -71,7 +75,7 @@ function Header() {
 
           {isPatientLoggedIn && (
             <>
-              <Nav.Link as={Link} to="/patient/dashboard">
+              <Nav.Link as={NavLink} end to="/patient/dashboard">
                 Patient Dashboard
               </Nav.Link>
 
@@ -81,7 +85,7 @@ function Header() {
 
           {isAdminLoggedIn && (
             <>
-              <Nav.Link as={Link} to="/admin/dashboard">
+              <Nav.Link as={NavLink} end to="/admin/dashboard">
                 Admin Dashboard
               </Nav.Link>
 
@@ -89,6 +93,7 @@ function Header() {
             </>
           )}
         </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

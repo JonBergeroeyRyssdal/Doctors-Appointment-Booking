@@ -37,7 +37,6 @@ function LoginForm({
       title={title}
       subtitle={subtitle}
       size="small"
-      loading={loading}
     >
       <UniversalForm
         fields={fields}
