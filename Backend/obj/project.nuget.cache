@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lF7t3IVh0Nc=",
+  "dgSpecHash": "MUnO1yLavHE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\Backend.csproj",
+  "projectFilePath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jon_r\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\jon_r\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
@@ -64,9 +64,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.OpenApi' 2.4.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
-      "projectPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\Backend.csproj",
+      "projectPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\Backend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\Backend.csproj",
+      "filePath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\Backend.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net10.0"

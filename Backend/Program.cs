@@ -55,11 +55,14 @@ builder.Services.AddCors(options =>
 // Swagger
 builder.Services.AddSwaggerGen(options =>
 {
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Backend.xml"));
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "Clinic Appointment Booking API",
-        Description = "ASP.NET Core Web API for booking doctor appointments"
+        Description = "API for clinics, doctors, patients and appointment booking. Expand an endpoint to see usage, parameters and responses. " +
+            "Send request data as JSON. Sign in using /api/auth/patient-login or /api/admin/auth/login. " +
+            "Copy the token into Authorize to access protected endpoints. Access requirements are described for each endpoint."
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

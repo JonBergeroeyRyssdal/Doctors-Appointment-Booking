@@ -18,6 +18,9 @@ public class ClinicsController : ControllerBase
         _context = context;
     }
 
+    /// <summary>Create a clinic</summary>
+    /// <remarks>Send the clinic name and address details as JSON. The name must be unique, ignoring case. Returns the clinic with its generated ID. A duplicate name returns 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="clinic">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Clinic>> CreateClinic(Clinic clinic)
@@ -37,6 +40,8 @@ public class ClinicsController : ControllerBase
         return Ok(clinic);
     }
 
+    /// <summary>Get all clinics</summary>
+    /// <remarks>Returns clinic IDs, names and address details. Returns an empty list when no clinics exist. Access: this endpoint does not require authentication in the current implementation.</remarks>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Clinic>>> GetClinics()
     {
@@ -45,6 +50,10 @@ public class ClinicsController : ControllerBase
         return Ok(clinics);
     }
 
+    /// <summary>Update a clinic</summary>
+    /// <remarks>Send name, address, postal code and city as JSON. The URL ID selects the clinic. The name must be unique. Returns 204 with no content. An unknown ID returns 404; a duplicate name returns 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
+    /// <param name="updatedClinic">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateClinic(int id, Clinic updatedClinic)
@@ -76,6 +85,9 @@ public class ClinicsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Delete a clinic</summary>
+    /// <remarks>Deletes the clinic with the specified ID and returns a confirmation message. An unknown ID returns 404. Clinics with associated doctors or appointments cannot be deleted and return 409. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteClinic(int id)

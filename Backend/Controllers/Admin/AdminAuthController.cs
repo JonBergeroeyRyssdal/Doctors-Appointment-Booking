@@ -15,6 +15,9 @@ public class AdminAuthController : ControllerBase
         _adminAuthService = adminAuthService;
     }
 
+    /// <summary>Sign in as an administrator</summary>
+    /// <remarks>Send username and password as JSON. Returns a JWT token, username and the Admin role. Use the token in Authorize to access administrator features. Invalid credentials return 401. Access: this endpoint does not require authentication in the current implementation.</remarks>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [HttpPost("login")]
     public async Task<IActionResult> Login(AdminLoginDto dto)
     {

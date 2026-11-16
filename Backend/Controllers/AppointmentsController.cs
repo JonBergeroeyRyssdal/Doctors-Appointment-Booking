@@ -24,6 +24,8 @@ public class AppointmentsController : ControllerBase
         _appointmentService = appointmentService;
     }
 
+    /// <summary>Get all appointments</summary>
+    /// <remarks>Returns appointment times, durations, statuses, patients, clinics, doctors and specialities. Includes cancelled appointments. Access: this endpoint does not require authentication in the current implementation.</remarks>
     [HttpGet]
     public async Task<IActionResult> GetAppointments()
     {
@@ -66,6 +68,8 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
 
+    /// <summary>Get my appointments</summary>
+    /// <remarks>Uses the patient ID from the token. Returns all appointments belonging to the signed-in patient, including cancelled appointments. Access: requires a valid JWT token. Use patient sign-in for patient features. Missing or invalid tokens return 401.</remarks>
     [Authorize]
     [HttpGet("my")]
     public async Task<IActionResult> GetMyAppointments()
@@ -113,6 +117,9 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
 
+    /// <summary>Get one of my appointments</summary>
+    /// <remarks>Returns appointment details only if the appointment belongs to the signed-in patient. Returns 404 if it does not exist or belongs to another patient. Access: requires a valid JWT token. Use patient sign-in for patient features. Missing or invalid tokens return 401.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAppointmentById(int id)
@@ -165,6 +172,9 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
 
+    /// <summary>Book an appointment as a guest</summary>
+    /// <remarks>Send first name, last name and email along with clinic ID, speciality ID, doctor ID, start time and duration. Birthdate and message are optional. An existing patient with the same email is reused. Returns the appointment with status Booked. Access: this endpoint does not require authentication in the current implementation. Booking rules: duration must be 15, 30, 45 or 60 minutes; start times must fall on a 15-minute interval, between now and two months ahead. The entire appointment must fit within working hours and outside lunch from 11:30 to 12:30. Neither the doctor nor the patient may have overlapping active appointments. Invalid booking data returns 400.</remarks>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [HttpPost]
     public async Task<IActionResult> CreateGuestAppointment(
         CreatePatientAppointmentDto dto
@@ -176,6 +186,9 @@ public class AppointmentsController : ControllerBase
         return ToActionResult(result);
     }
 
+    /// <summary>Book an appointment as a signed-in patient</summary>
+    /// <remarks>Uses the patient ID from the token. Send clinic ID, speciality ID, doctor ID, start time, duration and an optional message. Guest profile fields are ignored. Returns the appointment with status Booked. Access: requires a valid JWT token. Use patient sign-in for patient features. Missing or invalid tokens return 401. Booking rules: duration must be 15, 30, 45 or 60 minutes; start times must fall on a 15-minute interval, between now and two months ahead. The entire appointment must fit within working hours and outside lunch from 11:30 to 12:30. Neither the doctor nor the patient may have overlapping active appointments. Invalid booking data returns 400.</remarks>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize]
     [HttpPost("patient")]
     public async Task<IActionResult> CreateLoggedInPatientAppointment(
@@ -195,6 +208,10 @@ public class AppointmentsController : ControllerBase
         return ToActionResult(result);
     }
 
+    /// <summary>Update one of my appointments</summary>
+    /// <remarks>Send all appointment fields as JSON. Only the patient's own appointments can be updated. Cancelled appointments and appointments starting in less than 24 hours cannot be updated. Returns the updated appointment. Returns 404 if the appointment does not exist for this patient. Access: requires a valid JWT token. Use patient sign-in for patient features. Missing or invalid tokens return 401. Booking rules: duration must be 15, 30, 45 or 60 minutes; start times must fall on a 15-minute interval, between now and two months ahead. The entire appointment must fit within working hours and outside lunch from 11:30 to 12:30. Neither the doctor nor the patient may have overlapping active appointments. Invalid booking data returns 400.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAppointment(
@@ -215,6 +232,9 @@ public class AppointmentsController : ControllerBase
         return ToActionResult(result);
     }
 
+    /// <summary>Cancel one of my appointments</summary>
+    /// <remarks>Sets the status to Cancelled and keeps the appointment in the database. No request body is needed. Only the patient's own appointments can be cancelled, with at least 24 hours remaining before the start. Returns a confirmation message. Already cancelled appointments return 400. Access: requires a valid JWT token. Use patient sign-in for patient features. Missing or invalid tokens return 401.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [Authorize]
     [HttpPut("{id}/cancel")]
     public async Task<IActionResult> CancelAppointment(int id)

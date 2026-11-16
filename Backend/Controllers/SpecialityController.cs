@@ -19,6 +19,9 @@ public class SpecialityController : ControllerBase
     }
 
     // POST: api/specialities
+    /// <summary>Create a medical speciality</summary>
+    /// <remarks>Send the speciality name as JSON. The name must be unique, ignoring case. Returns the created speciality with its ID. A duplicate name returns 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="speciality">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Speciality>> CreateSpeciality(Speciality speciality)
@@ -39,6 +42,8 @@ public class SpecialityController : ControllerBase
     }
 
     // GET: api/specialities
+    /// <summary>Get all medical specialities</summary>
+    /// <remarks>Returns IDs and names for the specialities available when selecting a doctor and booking an appointment. Returns an empty list when no specialities exist. Access: this endpoint does not require authentication in the current implementation.</remarks>
     [HttpGet]
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Speciality>>> GetSpecialities()
@@ -49,6 +54,9 @@ public class SpecialityController : ControllerBase
     }
 
     // DELETE: api/specialities/1
+    /// <summary>Delete a medical speciality</summary>
+    /// <remarks>Deletes the speciality with the specified ID and returns 204 with no content. An unknown ID returns 404. Associated doctors or appointments prevent deletion and return 409. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSpeciality(int id)

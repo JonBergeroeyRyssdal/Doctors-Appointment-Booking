@@ -20,6 +20,8 @@ public class DoctorsController : ControllerBase
     }
 
     // GET: api/doctors
+    /// <summary>Get all doctors</summary>
+    /// <remarks>Returns doctor IDs, names, clinics, specialities and weekly working hours. Working hours include the weekday and start and end times in HH:mm format. Access: this endpoint does not require authentication in the current implementation.</remarks>
     [HttpGet]
     public async Task<IActionResult> GetDoctors()
     {
@@ -57,6 +59,9 @@ public class DoctorsController : ControllerBase
     }
 
     // GET: api/doctors/search?name=smith
+    /// <summary>Search doctors by name</summary>
+    /// <remarks>Searches for text contained in a doctor's first or last name. Returns matching IDs, names, clinics and specialities. No matches return an empty list. An empty search term returns 400. Access: this endpoint does not require authentication in the current implementation.</remarks>
+    /// <param name="name">All or part of the doctor's first or last name, for example Hansen.</param>
     [HttpGet("search")]
     public async Task<IActionResult> SearchDoctors([FromQuery] string name)
     {
@@ -86,6 +91,9 @@ public class DoctorsController : ControllerBase
     }
 
     // GET: api/doctors/1
+    /// <summary>Get a doctor</summary>
+    /// <remarks>Returns the name, clinic, speciality and weekly working hours of the doctor with the specified ID. An unknown ID returns 404. Access: this endpoint does not require authentication in the current implementation.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetDoctor(int id)
     {
@@ -128,6 +136,9 @@ public class DoctorsController : ControllerBase
         return Ok(doctor);
     }
 
+    /// <summary>Create a doctor</summary>
+    /// <remarks>Send first name, last name, clinic ID and speciality ID as JSON. The clinic and speciality must exist. Returns 201 with the doctor and a Location header. An unknown clinic or speciality returns 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="doctor">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateDoctor(Doctor doctor)
@@ -151,6 +162,10 @@ public class DoctorsController : ControllerBase
         return CreatedAtAction(nameof(GetDoctor), new { id = doctor.Id }, doctor);
     }
 
+    /// <summary>Update a doctor</summary>
+    /// <remarks>Send first name, last name, clinic ID and speciality ID as JSON. The URL ID selects the doctor. Returns 204 with no content. An unknown doctor returns 404; an unknown clinic or speciality returns 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
+    /// <param name="updatedDoctor">JSON containing the fields described above. See the schema under Request body.</param>
     [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateDoctor(int id, Doctor updatedDoctor)
@@ -188,6 +203,9 @@ public class DoctorsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>Delete a doctor</summary>
+    /// <remarks>Deletes the doctor and their working-hour records and returns a confirmation message. An unknown doctor returns 404. Doctors with existing appointments cannot be deleted and return 409. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDoctor(int id)

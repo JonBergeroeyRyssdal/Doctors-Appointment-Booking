@@ -22,6 +22,8 @@ public class AdminController : ControllerBase
     }
 
     // GET: api/admins
+    /// <summary>Get all administrators</summary>
+    /// <remarks>Returns administrator IDs and usernames. Password hashes are not returned. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
     [HttpGet]
     public async Task<IActionResult> GetAdmins()
     {
@@ -37,6 +39,9 @@ public class AdminController : ControllerBase
     }
 
     // GET: api/admins/1
+    /// <summary>Get an administrator</summary>
+    /// <remarks>Returns the ID and username of the administrator with the specified ID. The password hash is not returned. An unknown ID returns 404. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAdmin(int id)
     {
@@ -58,6 +63,9 @@ public class AdminController : ControllerBase
     }
 
     // POST: api/admins
+    /// <summary>Create an administrator</summary>
+    /// <remarks>Send username and password as JSON. Both are required. The username is trimmed and must be unique, ignoring case. Returns 201 with the ID, username and a Location header. Missing fields or a duplicate username return 400. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [HttpPost]
     public async Task<IActionResult> CreateAdmin(CreateAdminDto dto)
     {
@@ -104,6 +112,10 @@ public class AdminController : ControllerBase
     }
 
     // PUT: api/admins/1
+    /// <summary>Update an administrator</summary>
+    /// <remarks>Send username and an optional new password as JSON. An empty or omitted password keeps the current password. The username is required and must be unique. Returns the ID and updated username. An invalid username returns 400; an unknown ID returns 404. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
+    /// <param name="dto">JSON containing the fields described above. See the schema under Request body.</param>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAdmin(
         int id,
@@ -152,6 +164,9 @@ public class AdminController : ControllerBase
     }
 
     // DELETE: api/admins/1
+    /// <summary>Delete an administrator</summary>
+    /// <remarks>Deletes the administrator with the specified ID and returns 204 with no content. The last administrator cannot be deleted. The code also rejects deleting your own account when the username is present in the token's sub claim. Rejected deletion returns 400; an unknown ID returns 404. Access: requires a JWT token with the Admin role. Missing or invalid tokens return 401; an incorrect role returns 403.</remarks>
+    /// <param name="id">ID of the resource to retrieve, update or delete.</param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAdmin(int id)
     {

@@ -3491,11 +3491,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\Backend.csproj",
+      "projectPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\jon_r\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Doctors Appointment Booking\\Backend\\obj\\",
+      "outputPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jon_r\\AppData\\Roaming\\NuGet\\NuGet.Config"
