@@ -2417,3 +2417,58 @@ footer a:hover {
   letter-spacing: -0.03em;
   margin: 0 0 0.5rem;
 }
+
+/* Open page surfaces: width belongs to the task, cards to individual sections. */
+.page-container { width: 100%; min-width: 0; margin-inline: auto; }
+.page-container-small { max-width: 32rem; }
+.page-container-medium { max-width: 52rem; }
+.page-container-large { max-width: 68rem; }
+.page-container-wide { max-width: none; }
+.page-section { min-width: 0; }
+.page-section > .page-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+.booking-wizard {
+  padding: clamp(1.1rem, 3vw, 2rem);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--app-shadow);
+}
+.nav-account {
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1.25rem;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--app-border);
+}
+.nav-booking { white-space: nowrap; margin-left: 0.5rem; }
+.app-navbar .nav-account .nav-logout { margin-left: 0; }
+.footer-compact-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-block: 1.25rem;
+}
+.app-footer .footer-compact-brand { font-size: 1rem; font-weight: 800; color: var(--app-heading); }
+.footer-compact-inner p { font-size: 0.875rem; }
+.footer-compact-inner nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.footer-compact-inner nav a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+@media (max-width: 991.98px) {
+  .nav-account {
+    align-items: stretch;
+    margin: 0.75rem 0 0;
+    padding: 0.75rem 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--app-border);
+  }
+  .nav-booking { margin-left: 0; align-self: flex-start; }
+}
+@media (max-width: 575.98px) {
+  .app-main { padding-top: 1.5rem; padding-bottom: 2rem; }
+  .footer-compact-inner { flex-direction: column; align-items: flex-start; }
+}

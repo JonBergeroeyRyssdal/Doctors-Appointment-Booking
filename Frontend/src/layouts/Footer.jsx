@@ -3,7 +3,8 @@ import LogoutButton from "../components/ui/LogoutButton";
 
 function Footer() {
   // Refresh account links when navigation follows sign-in or sign-out.
-  useLocation();
+  const { pathname } = useLocation();
+  const compact = /^\/(?:book|appointment|patient|admin|login|register)(?:\/|$)/.test(pathname);
   const patientSignedIn = Boolean(localStorage.getItem("token"));
   const adminSignedIn = Boolean(localStorage.getItem("adminToken"));
   const year = new Date().getFullYear();
@@ -18,6 +19,23 @@ function Footer() {
         { to: "/register", label: "Create an account" },
       ];
 
+  if (compact) {
+    return (
+      <footer className="app-footer app-footer-compact">
+        <div className="container footer-compact-inner">
+          <Link to="/" className="footer-compact-brand">Clinic</Link>
+          <p>&copy; {year} Clinic Appointment Booking</p>
+          <nav aria-label="Footer navigation">
+            <Link to="/about">About us</Link>
+            <Link to={adminSignedIn ? "/admin/dashboard" : "/admin/login"}>
+              {adminSignedIn ? "Administration" : "Staff login"}
+            </Link>
+          </nav>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="app-footer">
       <div className="container">
@@ -30,7 +48,7 @@ function Footer() {
             <p>Find a doctor, choose a time and manage your appointments in one place.</p>
             {!adminSignedIn && (
               <Link to={patientSignedIn ? "/patient/book" : "/book"} className="footer-booking-link">
-                Book an appointment <span aria-hidden="true">&rarr;</span>
+                Book an appointment
               </Link>
             )}
           </div>

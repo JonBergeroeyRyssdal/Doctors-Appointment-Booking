@@ -46,7 +46,7 @@ function ClinicsPage() {
       title="Our Clinics"
       eyebrow="Find your location"
       subtitle="Browse our clinics and find the location that suits you best."
-      size="large"
+      size="wide"
       loading={loading}
     >
       {error ? <div className="alert alert-danger" role="alert">{error}</div>

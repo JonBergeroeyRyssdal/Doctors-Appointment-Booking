@@ -52,7 +52,7 @@ function SearchPage() {
       title="Find your doctor"
       subtitle="Search by first or last name to find a doctor and see where they practise."
       eyebrow="Explore our care team"
-      size="large"
+      size="wide"
       actions={<Link to="/clinics" className="btn btn-outline-secondary">Browse clinics</Link>}
     >
       <section className="doctor-search-panel" aria-label="Search for a doctor">

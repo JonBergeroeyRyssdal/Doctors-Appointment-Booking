@@ -11,7 +11,7 @@ function WelcomePage() {
       title={<>Your next appointment,<br /><span className="app-accent">made simple.</span></>}
       subtitle="Find a doctor, choose an available time and book at one of our clinics. Get started below, with or without an account."
       actions={<Link to="/search" className="btn btn-outline-secondary welcome-find-doctor"><AppIcon name="search" />Find a doctor</Link>}
-      size="large"
+      size="wide"
     >
       <WelcomeComponent />
     </PageLayout>

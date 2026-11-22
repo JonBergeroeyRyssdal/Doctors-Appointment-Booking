@@ -32,7 +32,7 @@ function PatientDashboardPage() {
       eyebrow="Your care, in one place"
       actions={<Button as={Link} to="/patient/book">Book appointment</Button>}
       subtitle="Manage your appointments and personal information"
-      size="large"
+      size="wide"
     >
       <DashboardCardGrid cards={patientDashboardCards} />
     </PageLayout>
