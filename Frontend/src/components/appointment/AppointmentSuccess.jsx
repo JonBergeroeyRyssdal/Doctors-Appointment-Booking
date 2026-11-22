@@ -1,8 +1,10 @@
 import SuccessMessage from "../ui/SuccessMessage";
 import { formatDate, formatTime } from "../../utils/dateUtils";
+import { paymentMethods } from "../../data/paymentMethods";
 
 function AppointmentSuccess({
   appointment,
+  paymentDemo,
   title = "Your appointment is booked",
   primaryButtonText,
   primaryButtonTo,
@@ -61,6 +63,13 @@ function AppointmentSuccess({
             <div className="confirmation-note">
               <h3>Message to your doctor</h3>
               <p>{appointment.messageToDoctor}</p>
+            </div>
+          )}
+          {paymentDemo?.isDemo && (
+            <div className="confirmation-note payment-confirmation-note">
+              <span className="payment-demo-badge">Payment demo</span>
+              <h3>{paymentMethods.find((method) => method.id === paymentDemo.method)?.name || "Demo payment method"}</h3>
+              <p>No payment was processed and no invoice was sent. The payment selection is for demonstration only.</p>
             </div>
           )}
         </section>

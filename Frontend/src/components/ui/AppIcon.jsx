@@ -1,4 +1,7 @@
 const paths = {
+  phone: "M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm-2 15h12m-7 3h2",
+  card: "M3 5h18v14H3V5Zm0 5h18M6 15h4",
+  invoice: "M6 3h12v19l-3-2-3 2-3-2-3 2V3Zm3 5h6m-6 4h6m-6 4h3",
   login: "M14 4h6v16h-6M9 8l4 4-4 4M3 12h10",
   userPlus: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm10 5v6m-3-3h6",
   logout: "M9 4H4v16h5m6-12 4 4-4 4m-7-4h11",

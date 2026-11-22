@@ -8,6 +8,7 @@ function PatientAppointmentSuccessPage() {
   return (
     <AppointmentSuccess
       appointment={appointment}
+      paymentDemo={location.state?.paymentDemo}
       primaryButtonText="Book another appointment"
       primaryButtonTo="/patient/book"
       secondaryButtonText={"Go to patient dashboard"}

@@ -2211,11 +2211,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\BookingConcurrency.csproj",
+      "projectUniqueName": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\BookingConcurrency.csproj",
       "projectName": "BookingConcurrency",
-      "projectPath": "c:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\BookingConcurrency.csproj",
+      "projectPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\BookingConcurrency.csproj",
       "packagesPath": "C:\\Users\\jon_r\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\obj\\",
+      "outputPath": "C:\\Users\\jon_r\\OneDrive\\Dokumenter\\Code\\Prosjketer\\Doctors Appointment Booking\\Tests\\BookingConcurrency\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jon_r\\AppData\\Roaming\\NuGet\\NuGet.Config"

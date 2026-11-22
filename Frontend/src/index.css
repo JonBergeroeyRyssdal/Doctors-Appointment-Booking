@@ -784,7 +784,7 @@ footer a:hover {
 
 .booking-steps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--booking-step-count, 3), minmax(0, 1fr));
   gap: 0.75rem;
   list-style: none;
   padding: 0;
@@ -1881,6 +1881,307 @@ footer a:hover {
   color: var(--app-accent-dark);
 }
 
+/* Frontend-only payment preview */
+.payment-demo,
+.payment-demo-final {
+  margin-bottom: 1.75rem;
+}
+
+.payment-demo-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.payment-demo-heading h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.payment-demo-badge {
+  display: inline-block;
+  color: #6b4c12;
+  background: #fff4d9;
+  border: 1px solid #f0dfb7;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.payment-demo-intro {
+  color: var(--app-text);
+  font-size: 0.875rem;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0;
+  margin: 1.25rem 0;
+  border: 0;
+  min-width: 0;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.85rem;
+  cursor: pointer;
+  background: white;
+}
+
+.payment-method.is-selected {
+  border-color: var(--app-accent);
+  background: #f8f5fe;
+  box-shadow: 0 0 0 1px var(--app-accent);
+}
+
+.payment-method:focus-within {
+  outline: 3px solid #cdb8f3;
+  outline-offset: 3px;
+}
+
+.payment-method input {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--app-accent);
+}
+
+.payment-method-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 2.3rem;
+  height: 2.3rem;
+  border-radius: 0.65rem;
+  color: var(--app-accent-dark);
+  background: var(--app-accent-soft);
+}
+
+.payment-method-vipps {
+  color: #a63d16;
+  background: transparent;
+}
+
+.payment-method-vipps img {
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.payment-card-brands {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.65rem;
+  background: white;
+  vertical-align: middle;
+}
+
+.payment-card-brands img {
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.payment-method .payment-card-brands {
+  margin-top: 0.65rem;
+}
+
+.payment-vipps-heading,
+.payment-card-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.payment-card-heading {
+  justify-content: space-between;
+}
+
+.payment-vipps-heading > img {
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.payment-preview-vipps {
+  border-top: 3px solid #ff5b24;
+}
+
+.payment-method-invoice {
+  color: #185d94;
+  background: #e8f2fc;
+}
+
+.payment-method-clinic {
+  color: #0f766e;
+  background: #e8f5f1;
+}
+
+.payment-method-text {
+  min-width: 0;
+}
+
+.payment-method-text strong {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+
+.payment-method-text small {
+  display: block;
+  color: var(--app-text);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.payment-preview {
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--app-surface-soft);
+}
+
+.payment-provider-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.payment-provider-name span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--app-text);
+  margin-left: 0.4rem;
+}
+
+.payment-preview > p {
+  font-size: 0.875rem;
+  color: var(--app-text);
+}
+
+.payment-preview input[readonly] {
+  color: var(--app-text);
+  background: #eef0f5;
+  cursor: default;
+}
+
+.payment-test-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  max-width: 21rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  color: white;
+  background: #48386c;
+}
+
+.payment-test-card > span {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+
+.payment-test-card strong {
+  grid-column: 1 / -1;
+  font-family: var(--app-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.payment-example-total {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-top: 1px solid var(--app-border);
+  padding-top: 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.payment-demo-final {
+  padding: 1.5rem;
+  background: #faf8ef;
+  border: 1px solid #e9dfbd;
+  border-radius: 1rem;
+}
+
+.payment-demo-final > .dashboard-icon {
+  margin-right: 0.75rem;
+}
+
+.payment-demo-final h3 {
+  font-size: 1.25rem;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.payment-demo-final p {
+  color: var(--app-text);
+  font-size: 0.9rem;
+}
+
+.payment-demo-summary {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.payment-demo-summary > div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.payment-demo-summary dt {
+  color: var(--app-text);
+  font-weight: 500;
+}
+
+.payment-demo-summary dd {
+  margin: 0;
+  color: var(--app-heading);
+  font-weight: 600;
+}
+
+.payment-demo-booking-note {
+  border-top: 1px solid #e9dfbd;
+  padding-top: 1rem;
+  margin: 0.75rem 0 0;
+}
+
+.payment-confirmation-note .payment-demo-badge {
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 575.98px) {
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-preview,
+  .payment-demo-final {
+    padding: 1.1rem;
+  }
+}
+
 /* Shared page rhythm */
 .app-shell {
   background: transparent;
@@ -2105,4 +2406,14 @@ footer a:hover {
   .btn-success:hover {
     transform: none;
   }
+}
+
+/* Booking uses the shared page typography instead of Bootstrap heading sizing. */
+.booking-step-heading {
+  color: var(--app-heading);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
 }

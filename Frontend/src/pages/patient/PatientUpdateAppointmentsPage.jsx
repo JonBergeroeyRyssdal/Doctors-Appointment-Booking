@@ -1,3 +1,4 @@
+import useAppointmentBooking from "../../hooks/useAppointmentBooking";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
@@ -6,9 +7,6 @@ import PageLayout from "../../layouts/PageLayout";
 import AppointmentForm from "../../components/appointment/AppointmentForm";
 import ConfirmModal from "../../components/ui/ConfirmModal";
 
-import { getDoctors, getAvailableTimes } from "../../services/doctorsApi";
-import { getClinics } from "../../services/clinicsApi";
-import { getSpecialities } from "../../services/specialitiesApi";
 import {
   updateAppointment,
   getAppointmentById,
@@ -28,103 +26,37 @@ function PatientUpdateAppointmentPage() {
     location.state?.appointment || null,
   );
 
-  const [clinics, setClinics] = useState([]);
-  const [specialities, setSpecialities] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [availableTimes, setAvailableTimes] = useState([]);
+  const {
+    formData, setFormData, clinics, specialities, doctors, availableTimes,
+    error, setError, handleChange, loadingBooking,
+  } = useAppointmentBooking({ editing: true });
 
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showUpdateConfirm, setShowUpdateConfirm] = useState(false);
 
-  const [formData, setFormData] = useState(null);
 
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+    async function loadAppointment() {
+      try {
+        const data = await getAppointmentById(id);
+        if (active) {
+          setAppointment(data);
+          setFormData(buildUpdateAppointmentFormData(data));
+        }
+      } catch (error) {
+        console.error(error);
+        if (active) navigate("/patient/appointments");
+      } finally {
+        if (active) setPageLoading(false);
+      }
+    }
     loadAppointment();
-    loadFormData();
-  }, []);
-
-  useEffect(() => {
-    if (!formData) {
-      return;
-    }
-
-    loadAvailableTimes();
-  }, [formData]);
-
-  async function loadAppointment() {
-    try {
-      const data = await getAppointmentById(id);
-
-      setAppointment(data);
-      setFormData(buildUpdateAppointmentFormData(data));
-    } catch (error) {
-      console.error(error);
-      navigate("/patient/appointments");
-    } finally {
-      setPageLoading(false);
-    }
-  }
-
-  async function loadFormData() {
-    try {
-      const [clinicsData, specialitiesData, doctorsData] = await Promise.all([
-        getClinics(),
-        getSpecialities(),
-        getDoctors(),
-      ]);
-
-      setClinics(clinicsData);
-      setSpecialities(specialitiesData);
-      setDoctors(doctorsData);
-    } catch (error) {
-      console.error(error);
-      setError("Could not load form data.");
-    }
-  }
-
-  async function loadAvailableTimes() {
-    if (
-      !formData.doctorId ||
-      !formData.appointmentDate ||
-      !formData.durationMinutes
-    ) {
-      setAvailableTimes([]);
-      return;
-    }
-
-    try {
-      const data = await getAvailableTimes(
-        formData.doctorId,
-        formData.appointmentDate,
-        formData.durationMinutes,
-      );
-
-      setAvailableTimes(data);
-    } catch (error) {
-      console.error(error);
-      setAvailableTimes([]);
-    }
-  }
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === "clinicId" ? { specialityId: "", doctorId: "", appointmentDateTime: "" } : {}),
-      ...(name === "specialityId" ? { doctorId: "", appointmentDateTime: "" } : {}),
-      ...(name === "doctorId" ||
-      name === "appointmentDate" ||
-      name === "durationMinutes"
-        ? { appointmentDateTime: "" }
-        : {}),
-    }));
-  }
+    return () => { active = false; };
+  }, [id, navigate, setFormData]);
 
   function handleCancelUpdate() {
     navigate("/patient/appointments");
@@ -184,9 +116,10 @@ function PatientUpdateAppointmentPage() {
         doctors={doctors}
         availableTimes={availableTimes}
         existingAppointment={appointment}
+        paymentDemo={false}
         error={error}
         success=""
-        loading={loading}
+        loading={loading || loadingBooking}
         onChange={handleChange}
         onSubmit={handleSubmit}
         buttonText="Update appointment"

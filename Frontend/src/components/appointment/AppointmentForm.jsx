@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import UniversalForm from "../forms/UniversalForm";
 import { formatDateForInput } from "../../utils/dateUtils";
+import PaymentDemo from "./PaymentDemo";
+import { paymentMethods, demoPaymentAmount, demoPaymentCurrency } from "../../data/paymentMethods";
 
 function AppointmentForm({
   mode = "guest",
@@ -10,6 +12,7 @@ function AppointmentForm({
   doctors = [],
   availableTimes = [],
   existingAppointment,
+  paymentDemo = !existingAppointment,
   error,
   success,
   loading,
@@ -20,6 +23,7 @@ function AppointmentForm({
   const isGuest = mode === "guest";
   const [step, setStep] = useState(0);
   const [stepError, setStepError] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("clinic");
   const headingRef = useRef(null);
   const mounted = useRef(false);
   useEffect(() => {
@@ -199,12 +203,15 @@ function AppointmentForm({
 
   const providerNames = ["clinicId", "specialityId", "doctorId"];
   const timeNames = ["appointmentDate", "durationMinutes", "appointmentDateTime"];
-  const steps = ["Choose provider", "Choose time", "Review & confirm"];
+  const steps = paymentDemo
+    ? ["Provider", "Time", "Your details", "Payment", "Confirm"]
+    : ["Choose provider", "Choose time", "Review & confirm"];
+  const finalStep = steps.length - 1;
   const visibleFields = fields.filter((field) => step === 0
     ? providerNames.includes(field.name)
     : step === 1
       ? timeNames.includes(field.name)
-      : !providerNames.includes(field.name) && !timeNames.includes(field.name));
+      : step === 2 && !providerNames.includes(field.name) && !timeNames.includes(field.name));
 
   function handleStepSubmit(event) {
     event.preventDefault();
@@ -219,7 +226,7 @@ function AppointmentForm({
       setStepError("Please choose a date, duration and available time.");
       return;
     }
-    if (step < 2) {
+    if (step < finalStep) {
       setStep(step + 1);
       return;
     }
@@ -233,7 +240,19 @@ function AppointmentForm({
       setStep(1);
       return;
     }
-    onSubmit(event);
+    if (isGuest && ["firstName", "lastName", "email"].some((name) => !String(formData[name] || "").trim())) {
+      setStepError("Please enter your name and email.");
+      setStep(2);
+      return;
+    }
+    if (paymentDemo && !paymentMethods.some((method) => method.id === paymentMethod)) {
+      setStepError("Please select a payment method.");
+      setStep(3);
+      return;
+    }
+    onSubmit(event, paymentDemo ? {
+      method: paymentMethod, amount: demoPaymentAmount, currency: demoPaymentCurrency, isDemo: true,
+    } : undefined);
   }
 
   const clinic = clinics.find((item) => Number(item.id) === Number(formData.clinicId));
@@ -243,7 +262,7 @@ function AppointmentForm({
 
   return (
     <div className="booking-wizard">
-      <ol className="booking-steps" aria-label="Booking progress">
+      <ol className="booking-steps" aria-label="Booking progress" style={{ "--booking-step-count": steps.length }}>
         {steps.map((label, index) => (
           <li key={label} className={index === step ? "is-current" : index < step ? "is-complete" : ""} aria-current={index === step ? "step" : undefined}>
             <span className="booking-step-number" aria-hidden="true">{index < step ? "✓" : index + 1}</span>
@@ -251,12 +270,14 @@ function AppointmentForm({
           </li>
         ))}
       </ol>
-      <h2 className="h5 booking-step-heading" ref={headingRef} tabIndex={-1}>
+      <h2 className="booking-step-heading" ref={headingRef} tabIndex={-1}>
         {steps[step]}
       </h2>
       <p className="text-muted small mb-0">
         {step === 0 ? "Choose where and with whom you would like your appointment."
           : step === 1 ? "Choose a date and duration, then pick an available time."
+            : step === 3 ? "Explore a payment method using fixed demo details."
+              : paymentDemo && step === finalStep ? "Review the demo notice and confirm your appointment."
             : isGuest ? "Check your appointment and enter your contact details below."
               : "Check your appointment details before submitting."}
       </p>
@@ -268,7 +289,7 @@ function AppointmentForm({
         success={success}
         loading={loading}
         loadingText={step < 2 ? "Loading times..." : "Saving..."}
-        buttonText={step < 2 ? "Continue" : buttonText}
+        buttonText={step < finalStep ? "Continue" : paymentDemo ? "Confirm booking — no payment" : buttonText}
         onChange={onChange}
         onSubmit={handleStepSubmit}
         widthClass="w-100"
@@ -278,7 +299,9 @@ function AppointmentForm({
           </button>
         )}
       >
-        {step === 2 && (
+        {paymentDemo && step === 3 && <PaymentDemo method={paymentMethod} onChange={setPaymentMethod} disabled={loading} />}
+        {paymentDemo && step === finalStep && <PaymentDemo method={paymentMethod} final />}
+        {(step === 2 || (paymentDemo && step === finalStep)) && (
           <section className="booking-summary" aria-label="Appointment summary">
             <h3 className="h6 mb-3">Your appointment</h3>
             <dl>

@@ -8,6 +8,7 @@ function GuestAppointmentSuccessPage() {
   return (
     <AppointmentSuccess
       appointment={appointment}
+      paymentDemo={location.state?.paymentDemo}
       primaryButtonText="Book another appointment"
       primaryButtonTo="/book"
       secondaryButtonText="Back to home"
